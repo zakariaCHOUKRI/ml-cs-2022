@@ -1,0 +1,18 @@
+tr = pd.read_csv('Train.csv')
+y = tr['target'] ; idx_tr = tr['ID'] ;
+del tr['ID'] ;  tr['First Transaction Date']
+print (tr.shape)
+#------------------------------Delete duplicated rows--------------------------------------
+# with same Target
+print ("Delete duplicated rows:")
+num_rows = tr.shape[0]
+to_del = tr.duplicated(keep='first')
+tr = tr[~to_del] ; y = y[~to_del] ; 
+print ("\t*with same Target:",(num_rows-tr.shape[0])) 
+# With different target
+del tr['target']
+num_rows = tr.shape[0]
+tr_ = tr[tr.duplicated(keep=False)]
+tr.drop(tr_.index, inplace=True) ; y.drop(tr_.index, inplace=True)
+print ("\t*with diff Target:",(num_rows-tr.shape[0])) 
+print (tr.shape,y.shape)
